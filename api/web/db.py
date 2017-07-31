@@ -2,12 +2,13 @@
 
 import logging
 import logging.config
+
 from logsettings import LOG_SETTINGS
 
 logging.config.dictConfig(LOG_SETTINGS)
 
 from pymongo import MongoClient
-from dbsettings import MONGO
+from api.web.dbsettings import MONGO
 
 client = MongoClient(
     'mongodb://{}:{}@{}/{}'.format(MONGO['username'], MONGO['password'], MONGO['host'], MONGO['database']))
