@@ -5,9 +5,9 @@ import requests
 
 # from logic_control import list_cards, save_card, remove_card
 
-##
-## Setup the API
-##
+#
+# Setup the API
+#
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 
@@ -37,9 +37,9 @@ class Cards(Resource):
 api.add_resource(Card, '/card/<card_id>')
 api.add_resource(Cards, '/cards')
 
-##
-## Setup the App
-##
+#
+# Setup the App
+#
 app = Flask(__name__)
 app.register_blueprint(api_bp)
 
@@ -51,7 +51,7 @@ def index():
 
 @app.route("/list", methods=['GET'])
 def list():
-    return requests.get('http://127.0.0.1:5000/cards').content
+    return requests.get('http://192.168.99.100:5000/cards').content
 
 
 @app.route("/save", methods=['POST'])
@@ -72,4 +72,4 @@ def validate():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')

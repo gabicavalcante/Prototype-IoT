@@ -2,6 +2,7 @@
 
 import logging
 import logging.config
+
 from logsettings import LOG_SETTINGS
 
 logging.config.dictConfig(LOG_SETTINGS)

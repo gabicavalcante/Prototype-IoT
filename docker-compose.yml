@@ -1,0 +1,9 @@
+web:
+  restart: always
+  build: ./web
+  container_name: prototype-iot
+  ports:
+      - 5000:5000
+  env_file: .env
+  volumes:
+   - .:/code
