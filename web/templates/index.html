@@ -18,7 +18,8 @@
 <form action="{{ url_for('remove') }}" method="post" class="form-inline">
     <div class="form-group">
         <label>CARD ID:</label>
-        <input type="text" />
+        <input type="text" name='card_id'/>
+
         <button class="btn" type="submit">REMOVE</button>
     </div>
 </form>
@@ -26,8 +27,9 @@
 <form action="{{ url_for('validate') }}" method="get" class="form-inline">
     <div class="form-group">
         <label>CARD ID:</label>
-        <input type="text" />
-        <button class="btn" type="submit">VALIDE</button>
+        <input type="text" name='card_id'/>
+
+        <button class="btn" type="submit">VALIDATE</button>
     </div>
 </form>
 
@@ -36,4 +38,12 @@
         <button class="btn" type="submit">LIST CARDS</button>
     </div>
 </form>
+
+<form action="{{ url_for('clear') }}" method="post">
+    <div class="button">
+        <button class="btn" type="submit">CLEAR ALL CARDS</button>
+    </div>
+</form>
+
+{{content}}
 {% endblock %}

@@ -3,7 +3,12 @@ web:
   build: ./web
   container_name: prototype-iot
   ports:
-      - 5000:5000
+    - 5000:5000
   env_file: .env
   volumes:
-   - .:/code
+    - .:/code
+  links:
+    - db
+
+db:
+  image: mongo:3.0.2

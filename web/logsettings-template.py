@@ -11,6 +11,16 @@ LOG_SETTINGS = {
             'formatter': 'detailed',
             'stream': 'ext://sys.stdout',
         },
+        'mongodb': {
+            'class': 'log4mongo.handlers.MongoHandler',
+            'level': 'DEBUG',
+            'host': '192.168.99.100',
+            'port': 27017,
+            'database_name': 'prototype_database',
+            'collection': 'logs',
+            'username': 'prototype',
+            'password': 'prototype',
+        },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',

@@ -1,7 +1,7 @@
 MONGO = {
-    'database': 'prototype_database',
+    'database': 'prototypedb',
     'cards_collection': 'cards',
-    'username': 'gabriela',
-    'password': '75759597',
-    'host': '10.7.49.60'
+    'username': 'prototype',
+    'password': 'prototype',
+    'host': '192.168.99.100'
 }
