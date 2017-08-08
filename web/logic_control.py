@@ -15,6 +15,7 @@ try:
     client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
     db = client.prototypedb
     cards_collection = db.cards
+    logging.debug("DB_PORT_27017_TCP_ADDR: %s" % str(os.environ['DB_PORT_27017_TCP_ADDR']))
     logging.debug("Connected MongoDB successfully")
 except ConnectionFailure as e:
     logging.debug("Could not connect to MongoDB: %s" % e)
@@ -52,7 +53,7 @@ def remove_card(card_id):
 
 def validate_card(card_id):
     logging.debug("Validating card | ID: %s " % card_id)
-    if cards_collection.find({"card_id": card_id}).count() == 0:
+    if cards_collection.find({"card_id": card_id}).count() != 0:
         logging.info("VALID CARD")
         return True
     logging.info("INVALID CARD")

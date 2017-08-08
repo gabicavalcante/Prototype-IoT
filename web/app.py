@@ -1,8 +1,14 @@
+#coding: utf-8
+import json
+
 from flask import Flask, Blueprint, render_template, jsonify, request
 from flask_restful import Api, Resource, url_for, reqparse, abort
 
 import requests
-import json
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 import logging
 import logging.config
@@ -28,9 +34,8 @@ class Card(Resource):
     # TODO: implementar o get
     def get(self, card_id):
         logging.debug("[TODO] GET /card/%s " % card_id)
-        return "ooookkkkk"
-        #card = return_card(card_id)
-        #return jsonify(card)
+        card = return_card(card_id)
+        return jsonify(card)
 
     def delete(self, card_id):
         remove_card(card_id)
@@ -51,7 +56,7 @@ class Cards(Resource):
         card_id = args['card_id']
         logging.debug("POST /cards %s " % card_id)
         save_card(card_id)
-        return card_id, 201
+        return '', 201
 
     def get(self):
         logging.debug("GET /cards ")
@@ -84,36 +89,52 @@ def index():
 @app.route("/list", methods=['GET'])
 def list():
     r = requests.get('http://%s:5000/cards' % URL)
-    return render_template('index.html', content=r.text)
+    #if r.text:
+    #titles = [x.encode('UTF8') for x in r.text]
+    return render_template('index.html', cards=r.text)
+    #else:
+    #    return render_template('index.html', warning="Sem cartões cadastrados")
 
 
 @app.route("/clear", methods=['POST'])
 def clear():
     r = requests.delete('http://%s:5000/cards' % URL)
-    return render_template('index.html', content=r.text)
+    return render_template('index.html', msg="Todos cartões removidos!")
 
 
 @app.route("/save", methods=['POST'])
 def save():
+    if not request.form['card_id']:
+        error = 'Campo CARD ID vazio!'
+        return render_template('index.html', error=error)
     payload = {'card_id': request.form['card_id']}
     r = requests.post('http://%s:5000/cards' % URL, data=payload)
-    return render_template('index.html', content=r.text)
+    return render_template('index.html', msg="Cartão salvo!")
 
 
 @app.route("/remove", methods=['POST'])
 def remove():
+    if not request.form['card_id']:
+        error = 'Campo CARD ID vazio!'
+        return render_template('index.html', error=error)
     url = 'http://{}:5000/cards/{}'.format(URL, request.form['card_id'])
     r = requests.delete(url)
-    return render_template('index.html', content=r.text)
+    return render_template('index.html', msg="Cartão removido!")
 
 
-# TODO
 @app.route("/validate", methods=['GET'])
 def validate():
-    url = 'http://{}:5000/cards/{}'.format(URL, request.form['card_id'])
+    if not request.args.get("card_id"):
+        error = 'Campo CARD ID vazio!'
+        return render_template('index.html', error=error)
+    url = 'http://{}:5000/cards/{}'.format(URL, request.args.get("card_id"))
     r = requests.get(url)
-    print('------- ' + str(r.url))
-    return render_template('index.html', content="ok") #r.text)
+
+    if bool(r.text):
+        msg = "Cartão válido!"
+    else:
+        msg = "Cartão inválido!"
+    return render_template('index.html', msg=msg)
 
 
 if __name__ == "__main__":

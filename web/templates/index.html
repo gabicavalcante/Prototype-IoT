@@ -4,6 +4,24 @@
 <div class="page-header">
     <h1>IoT Prototype</h1>
     <p class="lead">Basic example.</p>
+
+    {% if error %}
+    <div class="alert alert-danger">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    {% if msg %}
+    <div class="alert alert-success">
+        <strong>Sucesso:</strong> {{ msg }}
+    </div>
+    {% endif %}
+
+    {% if warning %}
+    <div class="alert alert-warning">
+        <strong>Aviso:</strong> {{ warning }}
+    </div>
+    {% endif %}
 </div>
 
 <form action="{{ url_for('save') }}" method="post" class="form-inline" >
@@ -45,5 +63,9 @@
     </div>
 </form>
 
-{{content}}
+
+{% if cards %}
+    {{ cards }}
+{% endif %}
+
 {% endblock %}
