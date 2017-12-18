@@ -2,7 +2,7 @@ LOG_SETTINGS = {
     'version': 1,
     'root': {
         'level': 'NOTSET',
-        'handlers': ['console', 'file'],
+        'handlers': ['console'],
     },
     'handlers': {
         'console': {
@@ -11,15 +11,15 @@ LOG_SETTINGS = {
             'formatter': 'detailed',
             'stream': 'ext://sys.stdout',
         },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'INFO',
-            'formatter': 'detailed',
-            'filename': 'logs/app.log',
-            'mode': 'a',
-            'maxBytes': 10485760,
-            'backupCount': 5,
-        },
+#        'file': {
+#            'class': 'logging.handlers.RotatingFileHandler',
+#            'level': 'INFO',
+#            'formatter': 'detailed',
+#            'filename': '/home/ubuntu/Prototype-IoT/web/logs/app.log',
+#            'mode': 'a',
+#            'maxBytes': 10485760,
+#            'backupCount': 5,
+#        },
     },
     'formatters': {
         'detailed': {

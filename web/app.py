@@ -33,9 +33,10 @@ parser.add_argument('card_id')
 class Card(Resource):
     # TODO: implementar o get
     def get(self, card_id):
-        logging.debug("[TODO] GET /card/%s " % card_id)
+        logging.debug("[TODO] GET /cards/%s " % card_id)
         card = return_card(card_id)
-        return jsonify(card)
+	logging.debug("[TODO] GET >>>  %s " % card)
+        return card, 201
 
     def delete(self, card_id):
         remove_card(card_id)
@@ -78,7 +79,8 @@ api.add_resource(Cards, '/cards')
 app = Flask(__name__)
 app.register_blueprint(api_bp)
 
-URL = '192.168.99.100'
+URL = '10.7.49.161'
+PORT = '5050'
 
 
 @app.route("/")
@@ -88,7 +90,7 @@ def index():
 
 @app.route("/list", methods=['GET'])
 def list():
-    r = requests.get('http://%s:5000/cards' % URL)
+    r = requests.get('http://%s:%s/cards' % (URL, PORT))
     #if r.text:
     #titles = [x.encode('UTF8') for x in r.text]
     return render_template('index.html', cards=r.text)
@@ -98,7 +100,7 @@ def list():
 
 @app.route("/clear", methods=['POST'])
 def clear():
-    r = requests.delete('http://%s:5000/cards' % URL)
+    r = requests.delete('http://%s:%s/cards' % (URL, PORT))
     return render_template('index.html', msg="Todos cartões removidos!")
 
 
@@ -108,7 +110,7 @@ def save():
         error = 'Campo CARD ID vazio!'
         return render_template('index.html', error=error)
     payload = {'card_id': request.form['card_id']}
-    r = requests.post('http://%s:5000/cards' % URL, data=payload)
+    r = requests.post('http://%s:%s/cards' % (URL, PORT), data=payload)
     return render_template('index.html', msg="Cartão salvo!")
 
 
@@ -117,7 +119,7 @@ def remove():
     if not request.form['card_id']:
         error = 'Campo CARD ID vazio!'
         return render_template('index.html', error=error)
-    url = 'http://{}:5000/cards/{}'.format(URL, request.form['card_id'])
+    url = 'http://{}:{}/cards/{}'.format(URL, PORT, request.form['card_id'])
     r = requests.delete(url)
     return render_template('index.html', msg="Cartão removido!")
 
@@ -127,15 +129,16 @@ def validate():
     if not request.args.get("card_id"):
         error = 'Campo CARD ID vazio!'
         return render_template('index.html', error=error)
-    url = 'http://{}:5000/cards/{}'.format(URL, request.args.get("card_id"))
+    url = 'http://{}:{}/cards/{}'.format(URL, PORT, request.args.get("card_id"))
     r = requests.get(url)
 
-    if bool(r.text):
+    if r.text != [] and '[]' not in r.text:
         msg = "Cartão válido!"
+    	return render_template('index.html', msg=msg)
     else:
-        msg = "Cartão inválido!"
-    return render_template('index.html', msg=msg)
+        error = "Cartão inválido!"
+    	return render_template('index.html', error=error)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', threaded=True)
+    app.run(debug=True, host='0.0.0.0', port=5050, threaded=True)

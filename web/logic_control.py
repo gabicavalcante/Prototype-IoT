@@ -62,10 +62,12 @@ def validate_card(card_id):
 
 def return_card(card_id):
     logging.debug("Return card | ID: %s " % card_id)
-    if cards_collection.find({"card_id": card_id}).count() == 0:
-        return cards_collection.find({"card_id": card_id})
+    if cards_collection.find({"card_id": card_id}).count() != 0:
+        for c in cards_collection.find({"card_id": card_id}):
+	    c.pop('_id')
+	    return c
     logging.info("INVALID CARD")
-    return False
+    return []
 
 
 def list_cards():

@@ -3,7 +3,7 @@ web:
   build: ./web
   container_name: prototype-iot
   ports:
-    - 5000:5000
+    - 5050:5050
   env_file: .env
   volumes:
     - .:/code
